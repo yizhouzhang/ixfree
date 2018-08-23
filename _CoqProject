@@ -1,6 +1,18 @@
 -R ./src Top
-src/IxFree/Base.v src/IxFree/Connectives.v src/IxFree/Lib.v src/IxFree/Relations.v
-src/IxFree/Contractive.v src/IxFree/Fixpoint.v src/IxFree/UnaryFixpoint.v
+src/IxFree/Base.v
+src/IxFree/Connectives.v
+src/IxFree/Lib.v
+src/IxFree/Relations.v
+src/IxFree/Contractive.v
+src/IxFree/Fixpoint.v
+src/IxFree/UnaryFixpoint.v
+src/IxFree/BinaryFixpoint.v
 src/IxFree/RelationCurry.v
-src/IxFree/Con/Arrow.v src/IxFree/Con/Conj.v src/IxFree/Con/Disj.v src/IxFree/Con/Iff.v
-src/IxFree/Con/Forall.v src/IxFree/Con/Exists.v src/IxFree/Con/Later.v src/IxFree/Con/Tactics.v
+src/IxFree/Con/Arrow.v
+src/IxFree/Con/Conj.v
+src/IxFree/Con/Disj.v
+src/IxFree/Con/Iff.v
+src/IxFree/Con/Forall.v
+src/IxFree/Con/Exists.v
+src/IxFree/Con/Later.v
+src/IxFree/Con/Tactics.v

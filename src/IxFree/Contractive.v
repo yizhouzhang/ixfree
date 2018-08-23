@@ -4,6 +4,9 @@ Require Import IxFree.Base IxFree.Connectives IxFree.Relations.
 Definition contractive (l : list Type) (f : IRel l → IRel l) : Prop :=
   ∀ R₁ R₂, ⊨ ▷(R₁ ≈ᵢ R₂) ⇒ f R₁ ≈ᵢ f R₂.
 
+Definition contractive_x {A : Type} (P : A → list Type) (f : IRel_x P → IRel_x P) : Prop :=
+  ∀ R₁ R₂, ⊨ ▷(I_rel_x_equiv _ R₁ R₂) ⇒ I_rel_x_equiv _ (f R₁) (f R₂).
+
 Lemma auto_contr_id (n : nat) (P : IProp) :
   n ⊨ P ⇔ P.
 Proof.

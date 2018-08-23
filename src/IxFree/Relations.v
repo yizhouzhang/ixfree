@@ -18,3 +18,10 @@ Fixpoint subrel (l : list Type) : IRel l → IRel l → Prop :=
   end.
 
 Notation "R ≾ᵣ S" := (subrel _ R S) (at level 70).
+
+
+Definition I_rel_x_equiv {A : Type} (P : A → list Type) (R₁ R₂ : IRel_x P) : IProp :=
+  ∀ᵢ x, I_rel_equiv (P x) (R₁ x) (R₂ x).
+
+Definition subrel_x {A : Type} (P : A → list Type) (R₁ R₂ : IRel_x P) : Prop :=
+  ∀ x, subrel (P x) (R₁ x) (R₂ x).

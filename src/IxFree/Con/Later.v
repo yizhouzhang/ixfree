@@ -72,13 +72,12 @@ Ltac later_shift :=
     end
   end.
 
-Ltac loeb_induction :=
+Ltac loeb_induction_named IH :=
   match goal with
   | [ |- ?N ⊨ ?P ] =>
     apply (@I_loeb_induction N P);
     let K  := fresh "K" in
     let L  := fresh "L" in
-    let IH := fresh "IH" in
     intros K L IH;
     repeat 
       match goal with
@@ -89,6 +88,10 @@ Ltac loeb_induction :=
     clear N;
     rename K into N
   end.
+
+Tactic Notation "loeb_induction" ident(H) := loeb_induction_named H.
+Tactic Notation "loeb_induction" :=
+  let LöbIH := fresh "LöbIH" in loeb_induction_named LöbIH.
 
 Lemma step_in_later_aux {P Q : IProp} {n : nat} :
   ((n ⊨ ▷P) → (n ⊨ ▷Q)) → ((n ⊨ ▷P) → (n ⊨ ▷Q)).

@@ -1,7 +1,7 @@
 Require Import Utf8.
 Require Import List.
 Require Import IxFree.Base IxFree.Relations IxFree.Connectives.
-Require Import IxFree.UnaryFixpoint.
+Require Import IxFree.UnaryFixpoint IxFree.BinaryFixpoint.
 
 Fixpoint Prod (l : list Type) : Type :=
   match l with
@@ -9,21 +9,30 @@ Fixpoint Prod (l : list Type) : Type :=
   | A :: l => (A * Prod l)%type
   end.
 
-Fixpoint IRel_curry (l : list Type) : IRel1 (Prod l) → IRel l :=
-  match l return IRel1 (Prod l) → IRel l with
+Definition Prod_x {A : Type} (P : A → list Type) : A → Type :=
+  λ x, Prod (P x).
+
+Fixpoint IRel_curry (l : list Type) : IRel_1 (Prod l) → IRel l :=
+  match l return IRel_1 (Prod l) → IRel l with
   | nil    => λ R, R tt
   | A :: l => λ R x, IRel_curry l (λ y, R (x, y))
   end.
 
-Fixpoint IRel_uncurry (l : list Type) : IRel l → IRel1 (Prod l) :=
-  match l return IRel l → IRel1 (Prod l) with
+Definition IRel_x_curry {A : Type} (P : A → list Type) : IRel_2 (Prod_x P) → IRel_x P :=
+  λ R x, IRel_curry _ (R x).
+
+Fixpoint IRel_uncurry (l : list Type) : IRel l → IRel_1 (Prod l) :=
+  match l return IRel l → IRel_1 (Prod l) with
   | nil    => λ R _, R
   | A :: l => λ R p, IRel_uncurry l (R (fst p)) (snd p)
   end.
 
+Definition IRel_x_uncurry {A : Type} (P : A → list Type) : IRel_x P → IRel_2 (Prod_x P) :=
+  λ R x y, IRel_uncurry _ (R x) y.
+
 Lemma IRel_uncurry_equiv (l : list Type) (R₁ R₂ : IRel l) :
   ⊨ R₁ ≈ᵢ R₂ ⇒ 
-  I_rel_equiv (Prod l :: nil) (IRel_uncurry l R₁) (IRel_uncurry l R₂).
+    I_rel_equiv (Prod l :: nil) (IRel_uncurry l R₁) (IRel_uncurry l R₂).
 Proof.
 induction l; intro n; simpl.
 + iintro; iintro; auto.
@@ -33,7 +42,20 @@ induction l; intro n; simpl.
   iapply IHl.
 Qed.
 
-Lemma IRel_curry_equiv (l : list Type) (R₁ R₂ : IRel1 (Prod l)) :
+Lemma IRel_x_uncurry_equiv {A : Type} (P : A → list Type) (R₁ R₂ : IRel_x P) :
+  ⊨ I_rel_x_equiv _ R₁ R₂ ⇒
+    I_rel_x_equiv (λ x, Prod (P x) :: nil) (IRel_x_uncurry _ R₁) (IRel_x_uncurry _ R₂).
+Proof.
+  intro n.
+  iintro H.
+  iintro x ; iintro y.
+  unfold IRel_x_uncurry.
+  specialize (IRel_uncurry_equiv (P x) (R₁ x) (R₂ x) n) as H'.
+  iespecialize H.
+  iapply (I_arrow_elim H' H).
+Qed.
+
+Lemma IRel_curry_equiv (l : list Type) (R₁ R₂ : IRel_1 (Prod l)) :
   ⊨ I_rel_equiv (Prod l :: nil) R₁ R₂ ⇒ IRel_curry l R₁ ≈ᵢ IRel_curry l R₂.
 Proof.
 induction l; intro n; simpl.
@@ -41,6 +63,19 @@ induction l; intro n; simpl.
 + iintro H; iintro x.
   specialize (IHl (λ y, R₁ (x, y)) (λ y, R₂ (x, y)) n).
   iapply IHl; simpl; iintro y; iapply H.
+Qed.
+
+Lemma IRel_x_curry_equiv {A : Type} (P : A → list Type) (R₁ R₂ : IRel_2 (Prod_x P)) :
+  ⊨ I_rel_x_equiv (λ x, Prod (P x) :: nil) R₁ R₂ ⇒ 
+    I_rel_x_equiv _ (IRel_x_curry _ R₁) (IRel_x_curry _ R₂).
+Proof.
+  intro n.
+  iintro H.
+  iintro x.
+  unfold IRel_x_curry.
+  specialize (IRel_curry_equiv (P x) (R₁ x) (R₂ x) n) as H'.
+  specialize (I_forall_elim H x) as H'' ; clear H ; rename H'' into H.
+  apply (I_arrow_elim H' H).
 Qed.
 
 Lemma IRel_uncurry_subrel (l : list Type) (R₁ R₂ : IRel l) :
@@ -52,11 +87,28 @@ induction l; simpl.
   intro y; apply (H (x, y)).
 Qed.
 
-Lemma IRel_uncurry_curry_id (l : list Type) (R : IRel1 (Prod l)) :
+Lemma IRel_x_uncurry_subrel {A : Type} (P : A → list Type) (R₁ R₂ : IRel_x P) :
+  subrel_x (λ x, Prod (P x) :: nil) (IRel_x_uncurry _ R₁) (IRel_x_uncurry _ R₂) →
+  subrel_x _ R₁ R₂.
+Proof.
+  intro H.
+  intro x.
+  apply IRel_uncurry_subrel.
+  apply H.
+Qed.
+
+Lemma IRel_uncurry_curry_id (l : list Type) (R : IRel_1 (Prod l)) :
   ∀ n x, (n ⊨ IRel_uncurry l (IRel_curry l R) x) <-> (n ⊨ R x).
 Proof.
 induction l; intros n x; simpl.
 + destruct x; split; auto.
 + destruct x as [ x y ]; simpl.
   apply (IHl (λ z, R (x, z))).
+Qed.
+
+Lemma IRel_x_uncurry_curry_id {A : Type} (P : A → list Type) (R : IRel_2 (Prod_x P)) :
+  ∀ n x y, (n ⊨ IRel_x_uncurry _ (IRel_x_curry _ R) x y) ↔ (n ⊨ R x y).
+Proof.
+  intros n x.
+  apply IRel_uncurry_curry_id.
 Qed.
