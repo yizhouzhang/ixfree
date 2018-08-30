@@ -7,6 +7,9 @@ Definition contractive (l : list Type) (f : IRel l → IRel l) : Prop :=
 Definition contractive_x {A : Type} (P : A → list Type) (f : IRel_x P → IRel_x P) : Prop :=
   ∀ R₁ R₂, ⊨ ▷(I_rel_x_equiv _ R₁ R₂) ⇒ I_rel_x_equiv _ (f R₁) (f R₂).
 
+Definition contractive_xx {A B : Type} (P : A → B → list Type) (f : IRel_xx P → IRel_xx P) : Prop :=
+  ∀ R₁ R₂, ⊨ ▷(I_rel_xx_equiv _ R₁ R₂) ⇒ I_rel_xx_equiv _ (f R₁) (f R₂).
+
 Lemma auto_contr_id (n : nat) (P : IProp) :
   n ⊨ P ⇔ P.
 Proof.

@@ -65,6 +65,9 @@ Fixpoint IRel (l : list Type) : Type :=
 Definition IRel_x {A : Type} (P : A → list Type) : Type :=
   ∀ x : A, IRel (P x).
 
+Definition IRel_xx {A B : Type} (P : A → B → list Type) : Type :=
+  ∀ x : A, ∀ y : B, IRel (P x y).
+
 Definition I_valid (P : IProp) := ∀ n, I_valid_at n P.
 
 Notation "n ⊨ P" := (I_valid_at n P) (at level 98, no associativity).

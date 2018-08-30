@@ -7,6 +7,7 @@ src/IxFree/Contractive.v
 src/IxFree/Fixpoint.v
 src/IxFree/UnaryFixpoint.v
 src/IxFree/BinaryFixpoint.v
+src/IxFree/TernaryFixpoint.v
 src/IxFree/RelationCurry.v
 src/IxFree/Con/Arrow.v
 src/IxFree/Con/Conj.v

@@ -25,3 +25,9 @@ Definition I_rel_x_equiv {A : Type} (P : A → list Type) (R₁ R₂ : IRel_x P)
 
 Definition subrel_x {A : Type} (P : A → list Type) (R₁ R₂ : IRel_x P) : Prop :=
   ∀ x, subrel (P x) (R₁ x) (R₂ x).
+
+Definition I_rel_xx_equiv {A B : Type} (P : A → B → list Type) (R₁ R₂ : IRel_xx P) : IProp :=
+  ∀ᵢ x y, I_rel_equiv (P x y) (R₁ x y) (R₂ x y).
+
+Definition subrel_xx {A B : Type} (P : A → B → list Type) (R₁ R₂ : IRel_xx P) : Prop :=
+  ∀ x y, subrel (P x y) (R₁ x y) (R₂ x y).
