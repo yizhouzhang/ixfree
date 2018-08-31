@@ -74,7 +74,7 @@ Definition IRel_x_uncurry {A : Type} (P : A → list Type) : IRel_x P → IRel_2
 
 Lemma IRel_x_uncurry_equiv {A : Type} (P : A → list Type) (R₁ R₂ : IRel_x P) :
   ⊨ I_rel_x_equiv _ R₁ R₂ ⇒
-    I_rel_x_equiv (λ x, Prod (P x) :: nil) (IRel_x_uncurry _ R₁) (IRel_x_uncurry _ R₂).
+    I_rel_x_equiv (λ x, Prod (P x) :: nil) (IRel_x_uncurry P R₁) (IRel_x_uncurry _ R₂).
 Proof.
   intro n.
   iintro H.

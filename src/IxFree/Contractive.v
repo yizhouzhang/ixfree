@@ -17,7 +17,7 @@ isplit; iintro; assumption.
 Qed.
 
 Lemma auto_contr_arrow (n : nat) (P₁ Q₁ P₂ Q₂ : IProp) :
- (n ⊨ P₁ ⇔ P₂) → (n ⊨ Q₁ ⇔ Q₂) → (n ⊨ (P₁ ⇒ Q₁) ⇔ (P₂ ⇒ Q₂)).
+  (n ⊨ P₁ ⇔ P₂) → (n ⊨ Q₁ ⇔ Q₂) → (n ⊨ (P₁ ⇒ Q₁) ⇔ (P₂ ⇒ Q₂)).
 Proof.
 intros HP HQ; isplit; iintro H1; iintro H2.
 + apply I_conj_elim1 in HQ; iapply HQ; iapply H1.
