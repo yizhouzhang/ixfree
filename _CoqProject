@@ -3,6 +3,7 @@ src/IxFree/Base.v
 src/IxFree/Connectives.v
 src/IxFree/Lib.v
 src/IxFree/Relations.v
+src/IxFree/RelationsProperties.v
 src/IxFree/Contractive.v
 src/IxFree/Fixpoint.v
 src/IxFree/UnaryFixpoint.v
