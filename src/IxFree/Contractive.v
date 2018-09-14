@@ -72,6 +72,13 @@ intro HP; apply I_forall_intro in HP; isplit; iintro H.
   iespecialize HP; apply I_conj_elim2 in HP; iapply HP; assumption.
 Qed.
 
+Lemma auto_contr_iprop (n : nat) (A : Type) (P₁ P₂ : Prop) :
+  (P₁ ↔ P₂) → (n ⊨ (P₁)ᵢ ⇔ (P₂)ᵢ).
+Proof.
+  intro HPP ; isplit ; iintro HP ; apply I_Prop_elim in HP ; apply I_Prop_intro ;
+  apply HPP ; apply HP.
+Qed.
+
 Ltac auto_contr :=
   match goal with
   | [ |- ?N ⊨ ?P ⇔ ?P ] =>
@@ -90,5 +97,7 @@ Ltac auto_contr :=
     apply auto_contr_exists; intro; auto_contr
   | [ |- ?N ⊨ (▷ _) ⇔ (▷ _) ] =>
     later_up; later_shift; auto_contr
+  | [ |- ?N ⊨ (_)ᵢ ⇔ (_)ᵢ ] =>
+    apply auto_contr_iprop
   | _ => idtac
   end.

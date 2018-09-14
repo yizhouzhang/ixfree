@@ -92,16 +92,3 @@ Ltac loeb_induction_named IH :=
 Tactic Notation "loeb_induction" ident(H) := loeb_induction_named H.
 Tactic Notation "loeb_induction" :=
   let LöbIH := fresh "LöbIH" in loeb_induction_named LöbIH.
-
-Lemma step_in_later_aux {P Q : IProp} {n : nat} :
-  ((n ⊨ ▷P) → (n ⊨ ▷Q)) → ((n ⊨ ▷P) → (n ⊨ ▷Q)).
-Proof.
-auto.
-Qed.
-
-Ltac step_in_later :=
-  match goal with
-  | [ |- ?N ⊨ ?Q ] =>
-    let HL := fresh "HL" in
-    eapply step_in_later_aux; [ intro HL; later_shift | ]
-  end.

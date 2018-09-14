@@ -19,3 +19,11 @@ intro H; split; intro H'.
 + apply I_conj_elim1 in H; apply (I_arrow_elim H H').
 + apply I_conj_elim2 in H; apply (I_arrow_elim H H').
 Qed.
+
+Lemma I_iff_elim_M' {n : nat} {P Q : IProp} :
+  (n ⊨ P ⇔ Q) → (n ⊨ P) → (n ⊨ Q).
+Proof.
+intro H.
+apply I_iff_elim_M in H.
+apply H.
+Qed.

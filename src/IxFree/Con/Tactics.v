@@ -8,6 +8,8 @@ Require Import IxFree.Con.Forall.
 Require Import IxFree.Con.Exists.
 Require Import IxFree.Con.Later.
 
+Ltac ielim_prop H := apply I_Prop_elim in H.
+
 Ltac iintro_prop :=
   apply I_Prop_intro.
 
@@ -87,10 +89,21 @@ iintro x; eapply I_forall_elim in H.
 apply I_later_shift; eassumption.
 Qed.
 
+Lemma I_later_iff_up {n : nat} {P Q : IProp} :
+  (n ⊨ ▷P ⇔ ▷Q) → (n ⊨ ▷(P ⇔ Q)).
+Proof.
+intro H; idestruct H as H1 H2.
+apply I_later_arrow_up in H1.
+apply I_later_arrow_up in H2.
+later_shift.
+isplit ; assumption.
+Qed.
+
 Ltac later_down :=
   match goal with
   | [ |- _ ⊨ ▷ I_forall _ _ ] => apply I_later_forall_up
   | [ |- _ ⊨ ▷(_ ⇒ _) ] => apply I_later_arrow_up
+  | [ |- _ ⊨ ▷(_ ⇔ _) ] => apply I_later_iff_up
   end.
 
 Lemma I_later_arrow_down {n : nat} {P Q : IProp} :

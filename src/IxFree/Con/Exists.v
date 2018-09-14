@@ -38,3 +38,6 @@ Ltac idestruct_exists H x H' :=
 
 Ltac iexists x :=
   apply (I_exists_intro x).
+
+Ltac ieexists :=
+  eapply (I_exists_intro _).

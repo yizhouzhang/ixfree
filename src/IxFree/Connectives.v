@@ -6,3 +6,4 @@ Require Export IxFree.Con.Forall.
 Require Export IxFree.Con.Exists.
 Require Export IxFree.Con.Later.
 Require Export IxFree.Con.Tactics.
+Require Export IxFree.Con.Misc.
