@@ -9,6 +9,7 @@ Require Import IxFree.Con.Exists.
 Require Import IxFree.Con.Later.
 
 Ltac ielim_prop H := apply I_Prop_elim in H.
+Ltac icontradict H := ielim_prop H ; contradict H.
 
 Ltac iintro_prop :=
   apply I_Prop_intro.
