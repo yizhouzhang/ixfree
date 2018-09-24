@@ -50,3 +50,16 @@ Ltac iintro_arrow_named H :=
 Ltac iintro_arrow_anon :=
   let H := fresh "H" in
   iintro_arrow_named H.
+
+Ltac iintro_arrow' H :=
+  apply I_arrow_intro;
+  let K := fresh "k" in
+  let L := fresh "H_le" in
+  intros K L H;
+  let TL := type of L in
+  let N := match TL with _ ≤ ?N => N end in
+  repeat
+    match goal with
+    | [ A : N ⊨ ?R |- _ ] =>
+      apply (I_valid_monotone R K N L) in A
+    end.

@@ -25,6 +25,7 @@ Ltac iintro_anon :=
 
 Tactic Notation "iintro" ident(H) := iintro_named H.
 Tactic Notation "iintro" := iintro_anon.
+Tactic Notation "iintro'" ident(H) := iintro_arrow' H.
 
 Ltac iapply H :=
   first [ apply (I_arrow_elim H) | apply (I_forall_elim H) ].
@@ -127,7 +128,7 @@ Proof.
 intro H; iintro x; later_shift; iapply H.
 Qed.
 
-Ltac later_up := 
+Ltac later_up :=
   match goal with
   | [ |- _ ⊨ _ ⇒ _ ] => apply I_later_arrow_down
   | [ |- _ ⊨ I_forall _ _ ] => apply I_later_forall_down
