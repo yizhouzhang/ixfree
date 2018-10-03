@@ -42,15 +42,8 @@ Ltac ispecialize_arrow H :=
   end.
 
 Ltac ispecialize_forall H X :=
-  let T := type of H in
-  match T with
-  | (?N ⊨ I_forall ?A ?P) =>
-    let J := fresh in
-    assert (J : N ⊨ P X); 
-    [ apply (I_forall_elim H X) 
-    | clear H; rename J into H; try (cbv beta in H) 
-    ]
-  end.
+  apply (fun H' => I_forall_elim H' X) in H ;
+  try cbv beta in H.
 
 Tactic Notation "ispecialize" hyp(H) := ispecialize_arrow H.
 Tactic Notation "ispecialize" hyp(H) constr(X) := ispecialize_forall H X.
