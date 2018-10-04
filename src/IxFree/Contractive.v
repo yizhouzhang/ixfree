@@ -72,7 +72,7 @@ intro HP; apply I_forall_intro in HP; isplit; iintro H.
   iespecialize HP; apply I_conj_elim2 in HP; iapply HP; assumption.
 Qed.
 
-Lemma auto_contr_iprop (n : nat) (A : Type) (P₁ P₂ : Prop) :
+Lemma auto_contr_iprop (n : nat) (P₁ P₂ : Prop) :
   (P₁ ↔ P₂) → (n ⊨ (P₁)ᵢ ⇔ (P₂)ᵢ).
 Proof.
   intro HPP ; isplit ; iintro HP ; apply I_Prop_elim in HP ; apply I_Prop_intro ;
