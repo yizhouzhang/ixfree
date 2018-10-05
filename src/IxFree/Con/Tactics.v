@@ -14,6 +14,11 @@ Ltac icontradict H := ielim_prop H ; contradict H.
 Ltac iintro_prop :=
   apply I_Prop_intro.
 
+Hint Extern 0 => match goal with
+| [ H : ?n ⊨ (_)ᵢ|- _ ] => ielim_prop H
+| [ |- ?n ⊨ (_)ᵢ ] => iintro_prop
+end.
+
 Ltac iintro_named H :=
   iintro_arrow_named H ||
   iintro_forall_named H.
