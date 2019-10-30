@@ -23,3 +23,19 @@ isplit.
 + iintro H ; iapply H21 ; iapply H11 ; apply H.
 + iintro H ; iapply H12 ; iapply H22 ; apply H.
 Qed.
+
+Lemma I_disj_comm {n : nat} {P Q R : IProp} :
+  (n ⊨ (P ∨ᵢ Q) ∨ᵢ R) ↔ (n ⊨ P ∨ᵢ (Q ∨ᵢ R)).
+Proof.
+split ; intro H.
++ idestruct H as H H.
+  - idestruct H as H H.
+    * ileft ; exact H.
+    * iright ; ileft ; exact H.
+  - iright ; iright ; exact H.
++ idestruct H as H H.
+  - ileft ; ileft ; exact H.
+  - idestruct H as H H.
+    * ileft ; iright ; exact H.
+    * iright ; exact H.
+Qed.
