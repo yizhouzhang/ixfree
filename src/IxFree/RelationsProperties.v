@@ -20,18 +20,18 @@ End Defs.
 Section I_rel.
 Context (l : list Type).
 
-Instance I_rel_equiv_reflexive : Reflexive (I_rel_equiv l) := {}.
+Instance I_rel_equiv_reflexive : Reflexive (I_rel_equiv l).
 Proof.
-  intro ; intro n.
+  intro R ; intro n.
   induction l as [ | ? ? IH] ; simpl.
   + unfold I_iff ; isplit ; iintro ; assumption.
   + iintro.
     apply (IH (R x)).
 Qed.
 
-Instance I_rel_equiv_symmetric : Symmetric (I_rel_equiv l) := {}.
+Instance I_rel_equiv_symmetric : Symmetric (I_rel_equiv l).
 Proof.
-  intros ; intro n.
+  intros R₁ R₂ n.
   iintro H.
   induction l as [ | ? ? IH ] ; simpl in *.
   + idestruct H as H1 H2 ; isplit ; trivial.
@@ -45,15 +45,15 @@ End I_rel.
 Section I_rel_x.
 Context {A : Type} (P : A → list Type).
 
-Instance I_rel_x_equiv_reflexive : Reflexive (I_rel_x_equiv P) := {}.
+Instance I_rel_x_equiv_reflexive : Reflexive (I_rel_x_equiv P).
 Proof.
-  intro ; intro n ; iintro.
+  intro R ; intro n ; iintro.
   apply I_rel_equiv_reflexive.
 Qed.
 
-Instance I_rel_x_equiv_symmetric : Symmetric (I_rel_x_equiv P) := {}.
+Instance I_rel_x_equiv_symmetric : Symmetric (I_rel_x_equiv P).
 Proof.
-  intros ; intro n ; iintro ; iintro x.
+  intros R₁ R₂ ; intro n ; iintro ; iintro x.
   iapply (I_rel_equiv_symmetric _ (R₁ x) (R₂ x) n).
   iespecialize H ; apply H.
 Qed.
@@ -64,16 +64,16 @@ End I_rel_x.
 Section I_rel_xx.
 Context {A B : Type} (P : A → B → list Type).
 
-Instance I_rel_xx_equiv_reflexive : Reflexive (I_rel_xx_equiv P) := {}.
+Instance I_rel_xx_equiv_reflexive : Reflexive (I_rel_xx_equiv P).
 Proof.
-  intro ; intro n.
+  intro R ; intro n.
   iintro.
   apply I_rel_x_equiv_reflexive.
 Qed.
 
-Instance I_rel_xx_equiv_symmetric : Symmetric (I_rel_xx_equiv P) := {}.
+Instance I_rel_xx_equiv_symmetric : Symmetric (I_rel_xx_equiv P).
 Proof.
-  intros ; intro n ; iintro ; iintro x.
+  intros R₁ R₂ ; intro n ; iintro ; iintro x.
   iapply (I_rel_x_equiv_symmetric _ (R₁ x) (R₂ x) n).
   iintro y.
   iespecialize H ; apply H.
